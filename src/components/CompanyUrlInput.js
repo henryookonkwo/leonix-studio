@@ -5,28 +5,33 @@ function CompanyUrlInput() {
   const [url, setUrl] = useState("");
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (event) => {
     setUrl(event.target.value);
   };
 
   const handleSubmit = async () => {
-    // Call your API with the 'url' value as a parameter
-    // Example: apiCall(url);
-    const apiKey = "AIzaSyCiBzxxsnKJkEAwqz8vPtR-G7oIwobL_S0"; // Replace with your actual API key
+    const apiKey = "AIzaSyCiBzxxsnKJkEAwqz8vPtR-G7oIwobL_S0";
     const apiUrl = `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodeURIComponent(
       url
     )}&key=${apiKey}`;
+
+    setLoading(true);
+    setError(null);
+    setResult(null);
+
     try {
       const response = await axios.get(apiUrl);
-      console.log(response.data);
+      //   console.log(response.data);
       setResult(response.data);
       setError(null);
     } catch (err) {
       setError(err.message);
       setResult(null);
+    } finally {
+      setLoading(false);
     }
-    console.log(url); // Just for demonstration purposes
   };
 
   return (
@@ -38,6 +43,7 @@ function CompanyUrlInput() {
       <button type="submit" onClick={handleSubmit}>
         Submit
       </button>
+      {loading && <p>Loading...</p>}
       {result && (
         <div className="result-container">
           <h3>PageSpeed Insights Result:</h3>
