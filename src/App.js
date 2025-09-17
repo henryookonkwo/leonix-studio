@@ -7,6 +7,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <CompanyUrlInput />
+        <CompanyUrlInput />
       </header>
     </div>
   );
